@@ -1,0 +1,40 @@
+/* SVG Manipulation */
+/*.svgview {
+    border: 2px solid #ffc299;
+}*/
+
+/*.outerborder {
+    fill: #FF931E;
+    stroke: #ED1C24;
+    stroke-width: 4;
+}*/
+
+/*.cell {
+    fill: #4DAF7C;
+    stroke: #34495E;
+    stroke-width: 2;
+}*/
+
+.cell:hover {
+    fill: #FDE3A7;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.abalone{
+    padding: 20px;
+}
+.abalonecontrol{
+    flex-grow: 1;
+}
+.groupcontrol {
+    border: 2px solid #ffc299;
+    padding: 10px;
+}
+.subgroupcontrol {
+    border: 1px solid #f01090;
+    padding: 10px;
+}

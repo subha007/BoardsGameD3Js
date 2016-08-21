@@ -4,246 +4,56 @@
     <meta charset="utf-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
     <meta name="viewport" content="width=device-width">
-    <title>JS Bin</title>
-    <style type="text/css">
-        /* Template */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Sans-Serif;
-            line-height: 1.5em;
-        }
-
-        #header {
-            background: #ccc;
-            height: 100px;
-        }
-
-        #header h1 {
-            margin: 0;
-            padding-top: 15px;
-        }
-
-        main {
-            padding-bottom: 10010px;
-            margin-bottom: -10000px;
-            float: left;
-            width: 100%;
-        }
-
-        #nav {
-            padding-bottom: 10010px;
-            margin-bottom: -10000px;
-            float: left;
-            width: 430px;
-            margin-left: -100%;
-            background: #eee;
-        }
-
-        #footer {
-            clear: left;
-            width: 100%;
-            background: #ccc;
-            text-align: center;
-            padding: 4px 0;
-        }
-
-        #wrapper {
-            overflow: hidden;
-        }
-
-        #content {
-            margin-left: 430px; /* Same as 'nav' width */
-        }
-
-        .innertube {
-            margin: 15px; /* Padding for content */
-            margin-top: 0;
-        }
-
-        p {
-            color: #555;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        nav ul a {
-            color: darkgreen;
-            text-decoration: none;
-        }
-
-        /* SVG Manipulation */
-        .svgview {
-            border: 2px solid #ffc299;
-        }
-
-        .outerborder {
-            fill: #FF931E;
-            stroke: #ED1C24;
-            stroke-width: 4;
-        }
-
-        .cell {
-            fill: #4DAF7C;
-            stroke: #34495E;
-            stroke-width: 2;
-        }
-
-        .cell:hover {
-            fill: #FDE3A7;
-        }
-    </style>
-</head>
-<body>
-    <header id="header">
-        <div class="innertube">
-            <h1>Header...</h1>
-        </div>
-    </header>
-    <div id="wrapper">
-
-        <main>
-            <div id="content">
-                <div class="innertube">
-                    <h1>Heading</h1>
-                    <p>
-                        <div id="abalone"></div>
-                    </p>
-                </div>
-            </div>
-        </main>
-
-        <nav id="nav">
-            <div class="innertube">
-                <h3>Left heading</h3>
-                <ul>
-                    <li><a href="#">Link 1</a></li>
-                    <li><a href="#">Link 2</a></li>
-                    <li><a href="#">Link 3</a></li>
-                    <li><a href="#">Link 4</a></li>
-                    <li><a href="#">Link 5</a></li>
-                </ul>
-                <h3>Left heading</h3>
-                <ul>
-                    <li><a href="#">Link 1</a></li>
-                    <li><a href="#">Link 2</a></li>
-                    <li><a href="#">Link 3</a></li>
-                    <li><a href="#">Link 4</a></li>
-                    <li><a href="#">Link 5</a></li>
-                </ul>
-                <h3>Left heading</h3>
-                <ul>
-                    <li><a href="#">Link 1</a></li>
-                    <li><a href="#">Link 2</a></li>
-                    <li><a href="#">Link 3</a></li>
-                    <li><a href="#">Link 4</a></li>
-                    <li><a href="#">Link 5</a></li>
-                </ul>
-            </div>
-        </nav>
-
-    </div>
-
-    <footer id="footer">
-        <div class="innertube">
-            <p>Footer...</p>
-        </div>
-    </footer>
+    <title>Abalone Board</title>
+    <link rel="stylesheet" type="text/css" href="abalone.css">
+    <script type="text/javascript" src="abalone.js"></script>
     <script>
-        var width = 500, height = 500;
-        var origin = { x: 250, y: 250 };
-        var radiallength = 240;
-        var edgescount = 6;
-        var extAnglerad = Math.PI / edgescount * 2;
-        var circlesPerSide = 5;
-        var borderbeam = 4;
-
-        var xunit = radiallength / (2 * (circlesPerSide - 1) + (1 / Math.sin(extAnglerad)));
-        var yunit = xunit * Math.tan(extAnglerad);
-        var cellradiusgap = 2.5;
-
-        var outerHexVertices = [];
-
-        var translationMatrix = [];
-        var cellPositions = [];
-
-        var cellrows = circlesPerSide * 2 - 1;
-        var cellcols = cellrows;
-
-        function calculatOuterHex() {
-            for (var i = 0; i <= edgescount; ++i) {
-                outerHexVertices.push(origin.x + radiallength * Math.cos((i) * extAnglerad));
-                outerHexVertices.push(origin.y + radiallength * Math.sin((i) * extAnglerad));
-            }
-        }
-
-        function calculateTranslationMatrix() {
-            for (var y = (-1) * (circlesPerSide - 1), indx1 = 0; y <= (circlesPerSide - 1) ; ++y, indx1++) {
-
-                var noOfCols = cellrows - Math.abs(y);
-                var rowData = [];
-
-                for (var x = (-1) * (noOfCols - 1), indx2 = 0; x <= (noOfCols - 1) ; x += 2, indx2++) {
-                    rowData.push({ x: x, y: y });
-                }
-
-                translationMatrix.push(rowData);
-            }
-        }
-
-        function CalculateCircleCentres() {
-            for (var x = 0; x < translationMatrix.length; x++) {
-
-                var rowData = [];
-                for (var y = 0; y < translationMatrix[x].length; y++) {
-
-                    rowData.push({
-                        cx: origin.x + translationMatrix[x][y].x * xunit,
-                        cy: origin.y + translationMatrix[x][y].y * yunit,
-                        r: xunit - cellradiusgap
-                    });
-                }
-
-                cellPositions.push(rowData);
-            }
-        }
-
-        calculatOuterHex();
-        calculateTranslationMatrix();
-        CalculateCircleCentres();
-
-        var svg = d3.select("#abalone").append("svg")
-                    .attr("class", "svgview")
-                    .attr({ width: width, height: height });
-
-        var outerborder = svg.append("polygon")
-                    .attr("class", "outerborder")
-                    .attr("points", outerHexVertices.join());
-
-        var cells = svg.append("g")
-                       .selectAll("g")
-                       .data(cellPositions)
-                       .enter()
-                       .append("g")
-                       .selectAll("circle")
-                       .data(function (d, i, j) { return d; })
-                       .enter()
-                       .append("circle");
-        var cellsattr = cells.attr("r", function (d) {
-            return d.r;
-        })
-                             .attr("cx", function (d) {
-                                 return d.cx;
-                             })
-                             .attr("cy", function (d) {
-                                 return d.cy;
-                             })
-                             .attr("class", "cell");
 
     </script>
+</head>
+<body>
+    <div class="container">
+        <div class="abalone">
+        </div>
+        <div class="abalonecontrol">
+            <div class="groupcontrol">
+                <h2>SVG Properties</h2>
+                Width:<input type="number" id="svgwidth" value="500" onchange="renderAbalone.svgwidth_onkeypress()"
+                    onkeypress="this.onchange()" onpaste="this.onchange();" oninput="this.onchange();">
+                Height:<input type="number" id="svgheight" value="500" onchange="svgheight_onkeypress()"
+                    onkeypress="this.onchange()" onpaste="this.onchange();" oninput="this.onchange();">
+                Maintain Aspect Ratio: <input type="checkbox" id="svgaspectratiocheck" checked="true"><br />
+                <div class="subgroupcontrol">
+                    <h3>SVG Border</h3>
+                    Border Color:<input type="color" id="svgbordercolor" value="#ffc299">
+                    Fill Color:<input type="color" id="svgfill" value="#ffc299">
+                    Border Width:<input type="number" id="svgborderwidth" value="2">
+                </div>
+                <button onclick="onLoadHtml()">Update</button>
+            </div>
+            Lock Size: <input type="checkbox" id="svglockcalculatecheck" checked="true" onchange="svg_lockaspectdata()"
+                onkeypress="this.onchange()" onpaste="this.onchange();" oninput="this.onchange();"><br />
+            <div class="groupcontrol">
+                <h2>Abalone Properties</h2>
+                Radial Length:<input type="number" id="radialwidth" value="240">
+                Circles Per Side:<input type="number" id="circlesPerSide" value="5">
+                Border Beam:<input type="number" id="borderbeam" value="4">
+                Cell Radius Gap:<input type="number" id="cellradiusgap" value="2.5" step="any">
+                <div class="subgroupcontrol">
+                    <h3>Abalone Outer Properties</h3>
+                    Outer Border Stroke:<input type="color" id="outerborderstroke" value="black">
+                    Outer Border Fill:<input type="color" id="outerborderfill" value="#00c299">
+                    Outer Border Stroke Width:<input type="number" id="outerborderstrokewidth" value="5">
+                </div>
+                <div class="subgroupcontrol">
+                    <h3>Abalone Cell Properties</h3>
+                    Cell Border Stroke:<input type="color" id="cellborderstroke" value="black">
+                    Cell Border Fill:<input type="color" id="cellborderfill" value="#00c299">
+                    Cell Border Stroke Width:<input type="number" id="cellborderstrokewidth" value="5">
+                </div>
+                <button onclick="onLoadHtml()">Update</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
