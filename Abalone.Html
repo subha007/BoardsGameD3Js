@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width">
     <title>Abalone Board</title>
     <link rel="stylesheet" type="text/css" href="abalone.css">
+    <script type="text/javascript" src="helper.js"></script>
+    <script type="text/javascript" src="djsvg.js"></script>
     <script type="text/javascript" src="abalone.js"></script>
     <script>
 
@@ -26,7 +28,7 @@
                 <div class="subgroupcontrol">
                     <h3>SVG Border</h3>
                     Border Color:<input type="color" id="svgbordercolor" value="#ffc299">
-                    Fill Color:<input type="color" id="svgfill" value="#ffc299">
+                    Fill Color:<input type="color" id="svgfill" value="#00f299">
                     Border Width:<input type="number" id="svgborderwidth" value="2">
                 </div>
                 <button onclick="onLoadHtml()">Update</button>
@@ -35,21 +37,21 @@
                 onkeypress="this.onchange()" onpaste="this.onchange();" oninput="this.onchange();"><br />
             <div class="groupcontrol">
                 <h2>Abalone Properties</h2>
-                Radial Length:<input type="number" id="radialwidth" value="240">
-                Circles Per Side:<input type="number" id="circlesPerSide" value="5">
+                Radial Length:<input type="number" id="radialwidth" value="210">
+                Circles Per Side:<input type="number" id="circlesPerSide" value="7">
                 Border Beam:<input type="number" id="borderbeam" value="4">
                 Cell Radius Gap:<input type="number" id="cellradiusgap" value="2.5" step="any">
                 <div class="subgroupcontrol">
                     <h3>Abalone Outer Properties</h3>
                     Outer Border Stroke:<input type="color" id="outerborderstroke" value="black">
-                    Outer Border Fill:<input type="color" id="outerborderfill" value="#00c299">
-                    Outer Border Stroke Width:<input type="number" id="outerborderstrokewidth" value="5">
+                    Outer Border Fill:<input type="color" id="outerborderfill" value="#f0c299">
+                    Outer Border Stroke Width:<input type="number" id="outerborderstrokewidth" value="2">
                 </div>
                 <div class="subgroupcontrol">
                     <h3>Abalone Cell Properties</h3>
                     Cell Border Stroke:<input type="color" id="cellborderstroke" value="black">
                     Cell Border Fill:<input type="color" id="cellborderfill" value="#00c299">
-                    Cell Border Stroke Width:<input type="number" id="cellborderstrokewidth" value="5">
+                    Cell Border Stroke Width:<input type="number" id="cellborderstrokewidth" value="1">
                 </div>
                 <button onclick="onLoadHtml()">Update</button>
             </div>
